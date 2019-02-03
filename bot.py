@@ -1,4 +1,5 @@
 import os
+import datetime
 
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging_bot
@@ -9,6 +10,8 @@ TOKEN = os.environ.get('BOT_TOKEN')
 CHAT_ID = '149548428'
 
 updater = Updater(token=TOKEN)
+
+time = datetime.time(8)
 
 dispatcher = updater.dispatcher
 
@@ -46,7 +49,8 @@ def weather_queue(bot, job):
     forecast = ForecastOpenWeatherApi().get_forecast_weather()
     bot.send_message(chat_id=CHAT_ID, text=weather + '\n' + forecast)
 
+
 job_queue = updater.job_queue
-job_queue.run_daily(weather_queue, time=08.00)
+job_queue.run_daily(weather_queue, time)
 
 updater.start_polling()

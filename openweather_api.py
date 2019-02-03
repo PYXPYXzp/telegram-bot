@@ -1,6 +1,7 @@
-import requests
 from datetime import datetime
 import os
+
+import requests
 
 class BaseOpenWeatherApi:
 
@@ -68,7 +69,11 @@ class ForecastOpenWeatherApi(BaseOpenWeatherApi):
 		json_forecast = requests.get(self.url.format(self.FORECAST_WEATHER_URL), params=self.params).json()
 		if json_forecast.get('cod') != '200':
 			return "No forecast weather"
-		for json_weather in json_forecast['list']:
+		return json_forecast['list']
+	
+	def get_forecast_message(self):
+		forecast = self.get_forecast_weather()
+		for json_weather in forecast:
 			self.result.append(self.generate_message(json_weather))
 		return '\n'.join(self.result)
 
@@ -77,5 +82,3 @@ class ForecastOpenWeatherApi(BaseOpenWeatherApi):
 		description = self.get_description(json_weather)
 		time = self.get_datetime(json_weather)
 		return self.MESSAGE.format(time=time, temp=temp, description=description)
-
-
