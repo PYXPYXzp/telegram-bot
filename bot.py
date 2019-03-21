@@ -12,7 +12,7 @@ CHAT_ID = '149548428'
 
 updater = Updater(token=TOKEN)
 
-time = datetime.time(8)
+time = datetime.time(6)
 
 dispatcher = updater.dispatcher
 
@@ -32,7 +32,7 @@ def get_currency(bot, update):
 
 
 def forecast_weather(bot, update):
-    forecast = ForecastOpenWeatherApi().get_forecast_weather()
+    forecast = ForecastOpenWeatherApi().get_forecast_message()
     bot.send_message(chat_id=update.message.chat_id, text=forecast)
 
 
@@ -54,7 +54,7 @@ dispatcher.add_handler(unknown_handler)
 
 def weather_queue(bot, job):
     weather = CurrentOpenWeatherApi().get_current_weather()
-    forecast = ForecastOpenWeatherApi().get_forecast_weather()
+    forecast = ForecastOpenWeatherApi().get_forecast_message()
     bot.send_message(chat_id=CHAT_ID, text=weather + '\n' + forecast)
 
 def currency_queue(bot, job):
