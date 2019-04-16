@@ -25,25 +25,9 @@ class YuanCurrency(BaseCurrency):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 class BaseExchangerOrganization:
-    CURRENCIES_CLASSES = [DollarCurrency, EuroCurrency, YuanCurrency]
 
-    def __init__(self, api_data: dict):
-        self.currencies = api_data.get('currencies')
-        self.currencies_list = self.parse_currencies()
-
-    def parse_currencies(self) -> list:
-        currencies = []
-        if self.currencies:
-            for currency_class in self.CURRENCIES_CLASSES:
-                currency_api_data = self.currencies.get(currency_class.NAME)
-                if currency_api_data:
-                    currencies.append(
-                        currency_class(
-                            bid=currency_api_data['bid'],
-                            ask=currency_api_data['ask']
-                        )
-                    )
-        return currencies
+    def __init__(self, currencies: list):
+        self.currencies_list = currencies
 
 
 class Bank(BaseExchangerOrganization):
@@ -65,12 +49,15 @@ class BaseCurrencyApi:
     def get_data(self) -> dict:
         return requests.get(self.API_URL).json()
 
-    def get_currencies_by_organization(self, data: dict):
+    def get_organization_objects(self, data: dict):
         pass
 
     def get_organizations_data(self):
         data = self.get_data()
         return self.get_organization_objects(data)
+
+    def parse_currencies(self, currencies):
+        pass
 
 
 class FinanceAPI(BaseCurrencyApi):
@@ -80,16 +67,30 @@ class FinanceAPI(BaseCurrencyApi):
         1: Bank,
         2: Exchanger
     }
+    CURRENCIES_CLASSES = [DollarCurrency, EuroCurrency, YuanCurrency]
 
     def get_organization_objects(self, data: dict) -> dict:
         organization_objects = []
         organizations_data = data.get('organizations')
         for org_data in organizations_data:
+            currencies = self.parse_currencies(currencies=org_data['currencies'])
             organization_class = self.ORGANIZATION_OPTIONS[org_data['orgType']]
-            organization_objects.append(
-                organization_class(api_data=org_data)
-            )
+            organization_objects.append(organization_class(currencies))
         return organization_objects
+
+    def parse_currencies(self, currencies: dict) -> list:
+        currencies_result = []
+        if currencies:
+            for currency_class in self.CURRENCIES_CLASSES:
+                currency_api_data = currencies.get(currency_class.NAME)
+                if currency_api_data:
+                    currencies_result.append(
+                        currency_class(
+                            bid=currency_api_data['bid'],
+                            ask=currency_api_data['ask']
+                        )
+                    )
+        return currencies_result
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
