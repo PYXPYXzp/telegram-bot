@@ -117,20 +117,20 @@ class ExchangeRates:
 
     def generate_avg_message(self, org_data):
         exchanges = (
-            f"Менялы EUR покупка {self.get_average_currency(org_data=org_data, currency_name='EUR', exchange_type='exchanger', transaction_type='ask')} "
-            f"продажа {self.get_average_currency(org_data=org_data, currency_name='EUR', exchange_type='exchanger', transaction_type='bid')} "
-            f"USD покупка {self.get_average_currency(org_data=org_data, currency_name='USD', exchange_type='exchanger', transaction_type='ask')} "
-            f"продажа {self.get_average_currency(org_data=org_data, currency_name='USD', exchange_type='exchanger', transaction_type='bid')} "
-            f"CNY покупка {self.get_average_currency(org_data=org_data, currency_name='CNY', exchange_type='exchanger', transaction_type='ask')} "
-            f"продажа {self.get_average_currency(org_data=org_data, currency_name='CNY', exchange_type='exchanger', transaction_type='bid')}"
+            f"Менялы \nEUR покупка {self.get_average_currency(org_data=org_data, currency_name='EUR', exchange_type='exchanger', transaction_type='bid')} "
+            f"продажа {self.get_average_currency(org_data=org_data, currency_name='EUR', exchange_type='exchanger', transaction_type='ask')} \n"
+            f"USD покупка {self.get_average_currency(org_data=org_data, currency_name='USD', exchange_type='exchanger', transaction_type='bid')} "
+            f"продажа {self.get_average_currency(org_data=org_data, currency_name='USD', exchange_type='exchanger', transaction_type='ask')} \n"
+            f"CNY покупка {self.get_average_currency(org_data=org_data, currency_name='CNY', exchange_type='exchanger', transaction_type='bid')} "
+            f"продажа {self.get_average_currency(org_data=org_data, currency_name='CNY', exchange_type='exchanger', transaction_type='ask')}\n"
         )
         banks = (
-            f"Банки EUR покупка {self.get_average_currency(org_data=org_data, currency_name='EUR', exchange_type='banks', transaction_type='ask')} "
-            f"продажа {self.get_average_currency(org_data=org_data, currency_name='EUR', exchange_type='banks', transaction_type='bid')} "
-            f"USD покупка {self.get_average_currency(org_data=org_data, currency_name='USD', exchange_type='banks', transaction_type='ask')} "
-            f"продажа {self.get_average_currency(org_data=org_data, currency_name='USD', exchange_type='banks', transaction_type='bid')} "
-            f"CNY покупка {self.get_average_currency(org_data=org_data, currency_name='CNY', exchange_type='banks', transaction_type='ask')} "
-            f"продажа {self.get_average_currency(org_data=org_data, currency_name='CNY', exchange_type='banks', transaction_type='bid')}"
+            f"Банки \nEUR покупка {self.get_average_currency(org_data=org_data, currency_name='EUR', exchange_type='bank', transaction_type='bid')} "
+            f"продажа {self.get_average_currency(org_data=org_data, currency_name='EUR', exchange_type='bank', transaction_type='ask')} \n"
+            f"USD покупка {self.get_average_currency(org_data=org_data, currency_name='USD', exchange_type='bank', transaction_type='bid')} "
+            f"продажа {self.get_average_currency(org_data=org_data, currency_name='USD', exchange_type='bank', transaction_type='ask')} \n"
+            f"CNY покупка {self.get_average_currency(org_data=org_data, currency_name='CNY', exchange_type='bank', transaction_type='bid')} "
+            f"продажа {self.get_average_currency(org_data=org_data, currency_name='CNY', exchange_type='bank', transaction_type='ask')}"
         )
         return exchanges + '\n' + banks
 
@@ -151,7 +151,7 @@ class ExchangeRates:
                             float(getattr(currency, transaction_type))
                         )
         if len(result_list):
-            return get_avg_сurrency(result_list)
+            return round(get_avg_сurrency(result_list), 2)
         return default_value
 
     def get_graph(self):

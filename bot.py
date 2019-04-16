@@ -12,7 +12,7 @@ CHAT_ID = '149548428'
 
 updater = Updater(token=TOKEN)
 
-time = datetime.time(6)
+time = datetime.time(5)
 
 dispatcher = updater.dispatcher
 
