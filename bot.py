@@ -5,7 +5,7 @@ from telegram.ext import Updater, CommandHandler, MessageHandler, Filters
 import logging_bot
 
 from openweather_api import CurrentOpenWeatherApi, ForecastOpenWeatherApi
-from currency import Currency
+from currency import ExchangeRates
 
 TOKEN = os.environ.get('BOT_TOKEN')
 CHAT_ID = '149548428'
@@ -27,7 +27,7 @@ def current_weather(bot, update):
 
 
 def get_currency(bot, update):
-    average_currency = Currency().get_average_currency()
+    average_currency = ExchangeRates().get_avg_message()
     bot.send_message(chat_id=update.message.chat_id, text=average_currency)
 
 
@@ -58,7 +58,7 @@ def weather_queue(bot, job):
     bot.send_message(chat_id=CHAT_ID, text=weather + '\n' + forecast)
 
 def currency_queue(bot, job):
-    average_currency = Currency().get_average_currency()
+    average_currency = ExchangeRates().get_avg_message()
     bot.send_message(chat_id=CHAT_ID, text=average_currency)
 
 
