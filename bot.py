@@ -6,6 +6,7 @@ import logging_bot
 
 from openweather_api import CurrentOpenWeatherApi, ForecastOpenWeatherApi
 from currency import ExchangeRates
+from mongo_engine import connect_mongo
 
 TOKEN = os.environ.get('BOT_TOKEN')
 CHAT_ID = '149548428'
@@ -15,6 +16,8 @@ updater = Updater(token=TOKEN)
 time = datetime.time(5)
 
 dispatcher = updater.dispatcher
+
+connect_mongo(username='user', password='qwerty123')
 
 
 def start(bot, update):
