@@ -3,7 +3,7 @@ import json
 import unittest
 from unittest.mock import patch
 
-from currency import FinanceAPI, ExchangeRates
+from exchange import FinanceAPI, ExchangeRates
 
 
 class TestFinanceAPI(unittest.TestCase):

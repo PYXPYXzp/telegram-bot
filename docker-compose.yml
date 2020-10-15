@@ -1,0 +1,13 @@
+version: '3'
+services:
+  bot:
+    build: .
+    depends_on:
+      - mongodb
+  mongodb:
+    image: "mongo"
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=user
+      - MONGO_INITDB_ROOT_PASSWORD=qwerty123
+    ports:
+    - "27017:27017"
